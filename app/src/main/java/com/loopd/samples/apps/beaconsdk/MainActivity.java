@@ -22,7 +22,7 @@ import com.loopd.sdk.beacon.model.Beacon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RangingListener {
+public class MainActivity extends AppCompatActivity implements RangingListener, BeaconListAdapter.OnItemClickListener {
 
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_ACCESS_COARSE_LOCATION = 2;
@@ -31,15 +31,15 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
     private ScanningConfigs mScanningConfigs;
 
     private RecyclerView mRecyclerView;
-    private BeaconListAdapter mAdapter;
+    private BeaconListAdapter mAdapter = new BeaconListAdapter();
     private List<BeaconListAdapter.BeaconListItem> mBeaconListItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAdapter.setOnItemClickListener(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
-        mAdapter = new BeaconListAdapter(mBeaconListItems);
         mRecyclerView.setAdapter(mAdapter);
 
         mBeaconManager = new BeaconManager(getApplicationContext());
@@ -53,16 +53,16 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
 
     @Override
     public void onBeaconDiscoverd(Beacon beacon) {
-        BeaconListAdapter.BeaconListItem aBeaconListItem = new BeaconListAdapter.BeaconListItem(beacon);
-        if (mBeaconListItems.contains(aBeaconListItem)) {
-            int existPosition = mBeaconListItems.indexOf(aBeaconListItem);
-            aBeaconListItem.setAdvertisementCount(mBeaconListItems.get(existPosition).getAdvertisementCount() + 1);
-            mBeaconListItems.set(existPosition, aBeaconListItem);
-            mAdapter.notifyItemChanged(existPosition);
-        } else {
-            mBeaconListItems.add(aBeaconListItem);
-            mAdapter.notifyItemChanged(mBeaconListItems.size() - 1);
-        }
+        mAdapter.addOrIncreaseAdvertisementCount(beacon);
+    }
+
+    @Override
+    public void onItemClick(int position, BeaconListAdapter.BeaconListItem item) {
+        goBeaconCommandPage(item);
+    }
+
+    private void goBeaconCommandPage(BeaconListAdapter.BeaconListItem item) {
+        Toast.makeText(MainActivity.this, item.getBeacon().getId(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
