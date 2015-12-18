@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
 
     private RecyclerView mRecyclerView;
     private BeaconListAdapter mAdapter;
-    private List<Beacon> mBeacons = new ArrayList<>();
+    private List<BeaconListAdapter.BeaconListItem> mBeaconListItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
-        mAdapter = new BeaconListAdapter(mBeacons);
+        mAdapter = new BeaconListAdapter(mBeaconListItems);
         mRecyclerView.setAdapter(mAdapter);
 
         mBeaconManager = new BeaconManager(getApplicationContext());
@@ -53,13 +53,15 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
 
     @Override
     public void onBeaconDiscoverd(Beacon beacon) {
-        if (mBeacons.contains(beacon)) {
-            int existPosition = mBeacons.indexOf(beacon);
-            mBeacons.set(existPosition, beacon);
+        BeaconListAdapter.BeaconListItem aBeaconListItem = new BeaconListAdapter.BeaconListItem(beacon);
+        if (mBeaconListItems.contains(aBeaconListItem)) {
+            int existPosition = mBeaconListItems.indexOf(aBeaconListItem);
+            aBeaconListItem.setAdvertisementCount(mBeaconListItems.get(existPosition).getAdvertisementCount() + 1);
+            mBeaconListItems.set(existPosition, aBeaconListItem);
             mAdapter.notifyItemChanged(existPosition);
         } else {
-            mBeacons.add(beacon);
-            mAdapter.notifyItemChanged(mBeacons.size() - 1);
+            mBeaconListItems.add(aBeaconListItem);
+            mAdapter.notifyItemChanged(mBeaconListItems.size() - 1);
         }
     }
 
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
         super.onPause();
         mBeaconManager.stopRanging();
         invalidateOptionsMenu();
-        mBeacons.clear();
+        mBeaconListItems.clear();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_scan:
-                mBeacons.clear();
+                mBeaconListItems.clear();
                 mAdapter.notifyDataSetChanged();
                 mBeaconManager.startRanging(mScanningConfigs);
                 break;
