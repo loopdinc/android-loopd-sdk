@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LoopdBeaconSdkSample.iml" filepath="$PROJECT_DIR$/LoopdBeaconSdkSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../loopd-beacon/sdk/beaconsdk.iml" filepath="$PROJECT_DIR$/../loopd-beacon/sdk/beaconsdk.iml" />
     </modules>
   </component>
 </project>
