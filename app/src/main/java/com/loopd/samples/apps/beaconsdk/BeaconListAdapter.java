@@ -57,6 +57,11 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
         notifyItemChanged(existPosition);
     }
 
+    public void clearItems() {
+        mItems.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mItems.size();

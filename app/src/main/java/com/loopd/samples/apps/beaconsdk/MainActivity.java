@@ -19,9 +19,6 @@ import com.loopd.sdk.beacon.ScanningConfigs;
 import com.loopd.sdk.beacon.listener.RangingListener;
 import com.loopd.sdk.beacon.model.Beacon;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity implements RangingListener, BeaconListAdapter.OnItemClickListener {
 
     private static final int REQUEST_ENABLE_BT = 1;
@@ -32,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
 
     private RecyclerView mRecyclerView;
     private BeaconListAdapter mAdapter = new BeaconListAdapter();
-    private List<BeaconListAdapter.BeaconListItem> mBeaconListItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
         super.onPause();
         mBeaconManager.stopRanging();
         invalidateOptionsMenu();
-        mBeaconListItems.clear();
-        mAdapter.notifyDataSetChanged();
+        mAdapter.clearItems();
     }
 
     @Override
@@ -117,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_scan:
-                mBeaconListItems.clear();
-                mAdapter.notifyDataSetChanged();
+                mAdapter.clearItems();
                 mBeaconManager.startRanging(mScanningConfigs);
                 break;
             case R.id.menu_stop:
