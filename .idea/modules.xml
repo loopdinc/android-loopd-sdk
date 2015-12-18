@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LoopdBeaconSdkSample.iml" filepath="$PROJECT_DIR$/LoopdBeaconSdkSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/../loopd-beacon/sdk/beaconsdk.iml" filepath="$PROJECT_DIR$/../loopd-beacon/sdk/beaconsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loopd-beacon-sample.iml" filepath="$PROJECT_DIR$/loopd-beacon-sample.iml" />
     </modules>
   </component>
 </project>
