@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.loopd.sdk.beacon.model.Beacon;
 
 public class MainActivity extends AppCompatActivity implements RangingListener, BeaconListAdapter.OnItemClickListener {
 
+    public static final String TAG = "MainActivity";
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_ACCESS_COARSE_LOCATION = 2;
 
@@ -54,11 +56,13 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
 
     @Override
     public void onItemClick(int position, BeaconListAdapter.BeaconListItem item) {
-        goBeaconCommandPage(item);
+        Log.d(TAG, "onItemClick: " + item.getBeacon().getId());
+        goBeaconPage(item);
     }
 
-    private void goBeaconCommandPage(BeaconListAdapter.BeaconListItem item) {
-        Toast.makeText(MainActivity.this, item.getBeacon().getId(), Toast.LENGTH_SHORT).show();
+    private void goBeaconPage(BeaconListAdapter.BeaconListItem item) {
+        Intent intent = BeaconActivity.getCallingIntent(this, item.getBeacon());
+        startActivity(intent);
     }
 
     @Override
