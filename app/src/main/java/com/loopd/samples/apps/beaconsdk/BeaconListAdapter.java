@@ -33,6 +33,7 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
         BeaconListItem beaconListItem = mItems.get(position);
         itemHolder.setBeaconId(beaconListItem.getBeacon().getId());
         itemHolder.setBeaconAddress(beaconListItem.getBeacon().getAddress());
+        itemHolder.setRssi(beaconListItem.getBeacon().getRssi());
         itemHolder.setAdvertisementCount(beaconListItem.getAdvertisementCount());
     }
 
@@ -81,6 +82,7 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
     public static class ViewItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mBeaconIdTextView;
         private TextView mBeaconAddressTextView;
+        private TextView mRssiTextView;
         private TextView mAdvertisementCountTextView;
 
         private BeaconListAdapter mAdapter;
@@ -92,6 +94,7 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
 
             mBeaconIdTextView = (TextView) itemView.findViewById(R.id.beacon_id);
             mBeaconAddressTextView = (TextView) itemView.findViewById(R.id.beacon_address);
+            mRssiTextView = (TextView) itemView.findViewById(R.id.rssi);
             mAdvertisementCountTextView = (TextView) itemView.findViewById(R.id.advertisement_count);
         }
 
@@ -108,8 +111,12 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
             mBeaconAddressTextView.setText(beaconAddress);
         }
 
+        public void setRssi(int value) {
+            mRssiTextView.setText("rssi: " + value);
+        }
+
         public void setAdvertisementCount(int count) {
-            mAdvertisementCountTextView.setText(String.valueOf(count));
+            mAdvertisementCountTextView.setText("count: " + count);
         }
     }
 
