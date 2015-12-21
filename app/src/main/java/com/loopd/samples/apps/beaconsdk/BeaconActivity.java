@@ -31,6 +31,9 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mBeacon = extras.getParcelable(INTENT_PARAMS_BEACON);
