@@ -11,4 +11,28 @@
     android:orientation="vertical"
     tools:context="com.loopd.samples.apps.beaconsdk.BeaconActivity">
 
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/connecting"/>
+
+    <TextView
+        android:id="@+id/beacon_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/beacon_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/write_command_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/write_command"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
 </LinearLayout>

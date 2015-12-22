@@ -3,4 +3,15 @@
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
+    <string name="connecting">Connecting…</string>
+    <string name="wait_for_service">Waiting for service…</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="connected">Connected</string>
+    <string name="write_command">Write command</string>
+    <string-array name="command_array">
+        <item>0x00, Switch off Both Leds</item>
+        <item>0x0F, Switch on Red Led</item>
+        <item>0xF0, Switch on Yellow Led</item>
+        <item>0xFF, Switch on Both Leds</item>
+    </string-array>
 </resources>
