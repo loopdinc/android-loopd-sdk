@@ -16,7 +16,7 @@ import com.loopd.sdk.beacon.BeaconManager;
 import com.loopd.sdk.beacon.listener.ConnectListener;
 import com.loopd.sdk.beacon.model.Beacon;
 
-import java.util.Arrays;
+import java.io.UnsupportedEncodingException;
 
 public class BeaconActivity extends AppCompatActivity implements ConnectListener {
 
@@ -51,6 +51,7 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     public void onBeaconDisconnected() {
         Log.d(TAG, "onBeaconDisconnected");
         mStatusTextView.setText(R.string.disconnected);
+        mWriteCommandButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -63,7 +64,12 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
 
     @Override
     public void onDataReceived(byte[] data) {
-        Log.d(TAG, "onDataReceived: " + data);
+        Log.d(TAG, "onDataReceived: " + data.toString());
+        try {
+            Log.d(TAG, "onDataReceived: " + new String(data, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -115,24 +121,100 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     }
 
     public void onCommandDialogItemSelected(int position) {
-        byte commandByte = 0;
         switch (position) {
             case 0:
-                commandByte = (byte) 0x00;
+                // Switch off Both Leds
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_OFF_BOTH_LEDS);
                 break;
             case 1:
-                commandByte = (byte) 0x0F;
+                // Switch on Red Led
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_ON_RED_LED);
                 break;
             case 2:
-                commandByte = (byte) 0xF0;
+                // Switch on Yellow Led
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_ON_YELLOW_LED);
                 break;
             case 3:
-                commandByte = (byte) 0xFF;
+                // Switch on Both Leds
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_ON_BOTH_LEDS);
+                break;
+            case 4:
+                // Change the advertisement Frequency
+                showModifyAdvertisementFrequencyDialog();
+                break;
+            case 5:
+                // Get the amount of free space left
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_FREE_SPACE_LEFT);
+                break;
+            case 6:
+                // Change Transmission Power
+                showModifyTransmissionPowerDialog();
+                break;
+            case 7:
+                // Force the device to disconnect
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_FORCE_DISCONNECT);
                 break;
         }
-        byte[] bytes = new byte[1];
-        Arrays.fill(bytes, commandByte);
-        mBeaconManager.writeCommand(mLoopdCharacteristic, bytes);
+    }
+
+    private void showModifyAdvertisementFrequencyDialog() {
+        new AlertDialog.Builder(this)
+                .setItems(getResources().getStringArray(R.array.advertisement_frequency_options), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        byte[] param = null;
+                        switch (which) {
+                            case 0:
+                                // 1 per second
+                                param = new byte[]{0x01};
+                                break;
+                            case 1:
+                                // 2 per second
+                                param = new byte[]{0x02};
+                                break;
+                            case 2:
+                                // 4 per second
+                                param = new byte[]{0x04};
+                                break;
+                            case 3:
+                                // 8 per second
+                                param = new byte[]{0x08};
+                                break;
+                        }
+                        mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_CHANGE_ADVERTISEMENT_FREQUENCY, param);
+                    }
+                })
+                .show();
+    }
+
+    private void showModifyTransmissionPowerDialog() {
+        new AlertDialog.Builder(this)
+                .setItems(getResources().getStringArray(R.array.transmission_power_options), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        byte[] param = null;
+                        switch (which) {
+                            case 0:
+                                // -8dBM
+                                param = new byte[]{0x00, 0x08};
+                                break;
+                            case 1:
+                                // -4dBM
+                                param = new byte[]{0x00, 0x04};
+                                break;
+                            case 2:
+                                // +4dBM
+                                param = new byte[]{(byte) 0xFF, 0x04};
+                                break;
+                            case 3:
+                                // +8dBM
+                                param = new byte[]{(byte) 0xFF, 0x08};
+                                break;
+                        }
+                        mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_CHANGE_TRANSMISSION_POWER, param);
+                    }
+                })
+                .show();
     }
 
     @Override
