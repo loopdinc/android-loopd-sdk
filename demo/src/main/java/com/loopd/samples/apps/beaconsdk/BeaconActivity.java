@@ -65,11 +65,6 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     @Override
     public void onDataReceived(byte[] data) {
         Log.d(TAG, "onDataReceived: " + data.toString());
-        try {
-            Log.d(TAG, "onDataReceived: " + new String(data, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
