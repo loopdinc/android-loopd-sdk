@@ -22,6 +22,18 @@ dependencies {
 ```
 
 ## Usage
+### Permissions
+Declare the Bluetooth permission(s) in your application manifest file:
+```xml
+<uses-permission android:name="android.permission.BLUETOOTH"/>
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+```
+If you want to declare that your app is available to BLE-capable devices only, include the following in your app's manifest:
+```xml
+<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+```
+
 ### BeaconManager
 `BeaconManager` is a basic manager than help developer to control Loopd Badge.
 ```java
