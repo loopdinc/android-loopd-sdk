@@ -35,7 +35,7 @@ If you want to declare that your app is available to BLE-capable devices only, i
 ```
 
 ### BeaconManager
-`BeaconManager` is a basic manager than help developer to control Loopd Badge.
+`BeaconManager` is a basic manager helping developer to control Loopd Beacons.
 ```java
 mBeaconManager = new BeaconManager(getApplicationContext());
 ```
