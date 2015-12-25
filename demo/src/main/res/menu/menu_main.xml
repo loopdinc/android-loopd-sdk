@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      xmlns:apps="http://schemas.android.com/apk/res-auto"
+      tools:context=".MainActivity">
+      <item android:id="@+id/menu_refresh"
+            android:checkable="false"
+            android:orderInCategory="1"
+            apps:showAsAction="ifRoom"/>
+      <item android:id="@+id/menu_scan"
+            android:title="@string/menu_scan"
+            android:orderInCategory="100"
+            apps:showAsAction="ifRoom|withText"/>
+      <item android:id="@+id/menu_stop"
+            android:title="@string/menu_stop"
+            android:orderInCategory="101"
+            apps:showAsAction="ifRoom|withText"/>
+</menu>

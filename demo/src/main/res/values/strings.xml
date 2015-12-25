@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Loopd Beacon Sample</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="menu_scan">Scan</string>
+    <string name="menu_stop">Stop</string>
+    <string name="connecting">Connecting…</string>
+    <string name="wait_for_service">Waiting for service…</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="connected">Connected</string>
+    <string name="write_command">Write command</string>
+    <string-array name="command_array">
+        <item>Switch off Both Leds</item>
+        <item>Switch on Red Led</item>
+        <item>Switch on Yellow Led</item>
+        <item>Switch on Both Leds</item>
+        <item>Change the advertisement Frequency</item>
+        <item>Get the amount of free space left</item>
+        <item>Change Transmission Power</item>
+        <item>Force the device to disconnect</item>
+    </string-array>
+    <string-array name="advertisement_frequency_options">
+        <item>1 per second</item>
+        <item>2 per second</item>
+        <item>4 per second</item>
+        <item>8 per second</item>
+    </string-array>
+    <string-array name="transmission_power_options">
+        <item>-8dBM</item>
+        <item>-4dBM</item>
+        <item>+4dBM</item>
+        <item>+8dBM</item>
+    </string-array>
+</resources>
