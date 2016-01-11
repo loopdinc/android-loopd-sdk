@@ -79,7 +79,7 @@ mBeaconManager.writeCommand(BluetoothGattCharacteristic, BeaconManager.COMMAND_T
 |COMMAND_TURN_ON_RED_LED| 0x0F | Switch on red LED |
 |COMMAND_TURN_ON_YELLOW_LED| 0xF0 | Switch on yellow LED |
 |COMMAND_TURN_ON_BOTH_LEDS| 0xFF | Switch on both LEDs |
-|COMMAND_CHANGE_ADVERTISEMENT_FREQUENCY| 0xA0 | Change the advertisement Frequency |
+|COMMAND_CHANGE_ADVERTISEMENT_FREQUENCY| 0xA0 | Change advertisement frequency |
 |COMMAND_FREE_SPACE_LEFT| 0x14 | Get the amount of free space left |
 |COMMAND_CHANGE_TRANSMISSION_POWER| 0x10 | Change Transmission Power |
 |COMMAND_FORCE_DISCONNECT| 0x11 | Force the device to disconnect |
