@@ -87,7 +87,7 @@ mBeaconManager.writeCommand(BluetoothGattCharacteristic, BeaconManager.COMMAND_T
 
 ## Author
 
-Evan, evan.lin@getloopd.com
+Evan Lin, evan.lin@getloopd.com
 
 ## License
 
