@@ -1,5 +1,7 @@
 # Loopd Beacon SDK for Android
 
+## Description
+The Loopd Beacon SDK provides apis to interact with the Loopd Beacons from Android/iOS devices, and includes ranging, connecting, and writing and reading data between Loopd Beacons.
 
 ## Installation
 1. Create `libs` directory inside your project and copy there [aar](https://storage.googleapis.com/android-beacon-sdk/loopd-beacon-1.0.0.aar) file
@@ -35,7 +37,7 @@ If you want to declare that your app is available to BLE-capable devices only, i
 ```
 
 ### BeaconManager
-`BeaconManager` is a basic manager helping developer to control Loopd Beacons.
+`BeaconManager` is a basic manager helping developers to control Loopd Beacons.
 ```java
 mBeaconManager = new BeaconManager(getApplicationContext());
 ```
@@ -71,13 +73,13 @@ mBeaconManager.writeCommand(BluetoothGattCharacteristic, BeaconManager.COMMAND_T
 ```
 
 ## Commands
-|name| command | action  | 
+|name| command | action  |
 |:-------:|:-------:|:-------:|
 |COMMAND_TURN_OFF_BOTH_LEDS| 0x00 | Switch off both LEDs |
 |COMMAND_TURN_ON_RED_LED| 0x0F | Switch on red LED |
 |COMMAND_TURN_ON_YELLOW_LED| 0xF0 | Switch on yellow LED |
 |COMMAND_TURN_ON_BOTH_LEDS| 0xFF | Switch on both LEDs |
-|COMMAND_CHANGE_ADVERTISEMENT_FREQUENCY| 0xA0 | Change the advertisement Frequency |
+|COMMAND_CHANGE_ADVERTISEMENT_FREQUENCY| 0xA0 | Change advertisement frequency |
 |COMMAND_FREE_SPACE_LEFT| 0x14 | Get the amount of free space left |
 |COMMAND_CHANGE_TRANSMISSION_POWER| 0x10 | Change Transmission Power |
 |COMMAND_FORCE_DISCONNECT| 0x11 | Force the device to disconnect |
@@ -85,7 +87,7 @@ mBeaconManager.writeCommand(BluetoothGattCharacteristic, BeaconManager.COMMAND_T
 
 ## Author
 
-Evan, evan.lin@getloopd.com
+Evan Lin, evan.lin@getloopd.com
 
 ## License
 
