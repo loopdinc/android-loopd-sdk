@@ -134,20 +134,44 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
                 mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_ON_BOTH_LEDS);
                 break;
             case 4:
-                // Change the advertisement Frequency
-                showModifyAdvertisementFrequencyDialog();
-                break;
-            case 5:
-                // Get the amount of free space left
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_FREE_SPACE_LEFT);
-                break;
-            case 6:
-                // Change Transmission Power
+                // Change Advertisement Power
                 showModifyTransmissionPowerDialog();
                 break;
-            case 7:
-                // Force the device to disconnect
+            case 5:
+                // Disconnect Connection
                 mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_FORCE_DISCONNECT);
+                break;
+            case 6:
+                // Get Mac Address
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_GET_MAC_ADDRESS);
+                break;
+            case 7:
+                // Get the amount of free space
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_GET_AMOUNT_OF_FREE_SPACE);
+                break;
+            case 8:
+                // Set Device ID
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_SET_DEVICE_ID);
+                break;
+            case 9:
+                // iBeacon Advertisment
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_IBEACON_ADVERTISEMENT);
+                break;
+            case 10:
+                // Eddystone Advertisment
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_EDDYSTONE_ADVERTISEMENT);
+                break;
+            case 11:
+                // Advertise Eddystone and iBeacon
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_ADVERTISE_EDDYSTONE_AND_IBEACON);
+                break;
+            case 12:
+                // Change Advertisement Frequency
+                showModifyAdvertisementFrequencyDialog();
+                break;
+            case 13:
+                // Soft Reset the device
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_SOFT_RESET);
                 break;
         }
     }

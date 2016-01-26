@@ -13,10 +13,16 @@
         <item>Switch on Red Led</item>
         <item>Switch on Yellow Led</item>
         <item>Switch on Both Leds</item>
-        <item>Change the advertisement Frequency</item>
-        <item>Get the amount of free space left</item>
-        <item>Change Transmission Power</item>
-        <item>Force the device to disconnect</item>
+        <item>Change Advertisement Power</item>
+        <item>Disconnect Connection</item>
+        <item>Get Mac Address</item>
+        <item>Get the amount of free space</item>
+        <item>Set Device ID</item>
+        <item>iBeacon Advertisment</item>
+        <item>Eddystone Advertisment</item>
+        <item>Advertise Eddystone and iBeacon</item>
+        <item>Change Advertisement Frequency</item>
+        <item>Soft Reset the device</item>
     </string-array>
     <string-array name="advertisement_frequency_options">
         <item>1 per second</item>
