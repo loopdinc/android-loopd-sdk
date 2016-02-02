@@ -241,7 +241,7 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     private void showWriteCommandWithParameterDialog(final byte[] command) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText edittext= new EditText(this);
-        alert.setTitle("Write Command");
+        alert.setTitle("Write Parameter");
         alert.setView(edittext);
         alert.setPositiveButton("Write", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
