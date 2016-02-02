@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopd.sdk.beacon.BeaconManager;
 import com.loopd.sdk.beacon.listener.ConnectListener;
@@ -151,15 +153,15 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
                 break;
             case 8:
                 // Set Device ID
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_SET_DEVICE_ID);
+                showWriteCommandWithParameterDialog(BeaconManager.COMMAND_SET_DEVICE_ID);
                 break;
             case 9:
                 // iBeacon Advertisment
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_IBEACON_ADVERTISEMENT);
+                showWriteCommandWithParameterDialog(BeaconManager.COMMAND_IBEACON_ADVERTISEMENT);
                 break;
             case 10:
                 // Eddystone Advertisment
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_EDDYSTONE_ADVERTISEMENT);
+                showWriteCommandWithParameterDialog(BeaconManager.COMMAND_EDDYSTONE_ADVERTISEMENT);
                 break;
             case 11:
                 // Advertise Eddystone and iBeacon
@@ -234,6 +236,41 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
                     }
                 })
                 .show();
+    }
+
+    private void showWriteCommandWithParameterDialog(final byte[] command) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText edittext= new EditText(this);
+        alert.setTitle("Write Command");
+        alert.setView(edittext);
+        alert.setPositiveButton("Write", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String inputString = edittext.getText().toString();
+
+                byte[] bytes = null;
+                try {
+                    bytes = hexStringToByteArray(inputString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (bytes != null) {
+                    mBeaconManager.writeCommand(mLoopdCharacteristic, command, bytes);
+                } else {
+                    Toast.makeText(BeaconActivity.this, "cannot parse command string", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            private byte[] hexStringToByteArray(String s) throws Exception {
+                int len = s.length();
+                byte[] data = new byte[len / 2];
+                for (int i = 0; i < len; i += 2) {
+                    data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                            + Character.digit(s.charAt(i + 1), 16));
+                }
+                return data;
+            }
+        });
+        alert.show();
     }
 
     @Override
