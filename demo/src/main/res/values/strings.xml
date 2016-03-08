@@ -9,6 +9,7 @@
     <string name="connected">Connected</string>
     <string name="write_command">Write command</string>
     <string-array name="command_array">
+        <item>Change State</item>
         <item>Switch off Both Leds</item>
         <item>Switch on Red Led</item>
         <item>Switch on Yellow Led</item>
@@ -23,6 +24,20 @@
         <item>Advertise Eddystone and iBeacon</item>
         <item>Change Advertisement Frequency</item>
         <item>Soft Reset the device</item>
+        <item>Erase Storage Data</item>
+        <item>Get Firmware Version</item>
+    </string-array>
+    <string-array name="change_state_options">
+        <item>inactive state</item>
+        <item>in test state</item>
+        <item>unregistered state</item>
+        <item>registered state</item>
+        <item>in event state</item>
+        <item>contact exchange state</item>
+        <item>away from event state</item>
+        <item>return state</item>
+        <item>shipping state</item>
+        <item>sys failure state</item>
     </string-array>
     <string-array name="advertisement_frequency_options">
         <item>1 per second</item>
