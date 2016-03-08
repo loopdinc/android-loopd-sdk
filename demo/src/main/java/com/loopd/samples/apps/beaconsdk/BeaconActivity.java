@@ -152,8 +152,8 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
                 mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_GET_AMOUNT_OF_FREE_SPACE);
                 break;
             case 8:
-                // Set Device ID
-                showWriteCommandWithParameterDialog(BeaconManager.COMMAND_SET_DEVICE_ID);
+//                // Set Device ID
+//                showWriteCommandWithParameterDialog(BeaconManager.COMMAND_SET_DEVICE_ID);
                 break;
             case 9:
                 // iBeacon Advertisment
