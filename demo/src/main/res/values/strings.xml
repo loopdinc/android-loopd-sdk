@@ -17,9 +17,9 @@
         <item>Disconnect Connection</item>
         <item>Get Mac Address</item>
         <item>Get the amount of free space</item>
-        <item>Set Device ID</item>
-        <item>iBeacon Advertisment</item>
-        <item>Eddystone Advertisment</item>
+        <item>Get Device ID</item>
+        <item>iBeacon Advertisement</item>
+        <item>Eddystone Advertisement</item>
         <item>Advertise Eddystone and iBeacon</item>
         <item>Change Advertisement Frequency</item>
         <item>Soft Reset the device</item>
