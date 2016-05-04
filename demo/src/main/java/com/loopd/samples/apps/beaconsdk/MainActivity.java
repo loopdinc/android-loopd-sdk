@@ -6,13 +6,22 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopd.sdk.beacon.BeaconManager;
@@ -31,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
 
     private RecyclerView mRecyclerView;
     private BeaconListAdapter mAdapter = new BeaconListAdapter();
+    private Integer mRssiFilter = null;
+    private String mIdFilter = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
         mAdapter.setOnItemClickListener(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setAdapter(mAdapter);
+        initFilterViews();
 
         mBeaconManager = new BeaconManager(getApplicationContext());
         if (!mBeaconManager.hasBluetooth()) {
@@ -46,12 +58,104 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
             finish();
         }
         mBeaconManager.setRangingListener(this);
-        mScanningConfigs = new ScanningConfigs(ScanningConfigs.SCAN_MODE_ALL, null, null);
+        mScanningConfigs = new ScanningConfigs(ScanningConfigs.SCAN_MODE_ALL, mRssiFilter, null);
+    }
+
+    private void initFilterViews() {
+        AppCompatSeekBar seekBar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
+        final TextView rssiFilterText = (TextView) findViewById(R.id.rssi_filter);
+        rssiFilterText.setText(String.format(getString(R.string.rssi_filter), getString(R.string.none)));
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String rssiValueStr;
+                if (progress == 0) {
+                    mRssiFilter = null;
+                    rssiValueStr = getString(R.string.none);
+                } else {
+                    mRssiFilter = -progress;
+                    rssiValueStr = String.valueOf(-progress);
+                }
+                rssiFilterText.setText(String.format(getString(R.string.rssi_filter), rssiValueStr));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                refreshScanningConfigs();
+                restartRangingWithDelay(500);
+            }
+        });
+        final EditText idFilter = (EditText) findViewById(R.id.id_filter);
+        final Button cleanButton = (Button) findViewById(R.id.clean_button);
+        idFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mIdFilter = s.toString();
+                if (mIdFilter.isEmpty()) {
+                    cleanButton.setVisibility(View.INVISIBLE);
+                } else {
+                    cleanButton.setVisibility(View.VISIBLE);
+                }
+                restartRangingWithDelay(500);
+            }
+        });
+        cleanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                idFilter.setText("");
+            }
+        });
+    }
+
+    private void refreshScanningConfigs() {
+        mScanningConfigs = new ScanningConfigs(ScanningConfigs.SCAN_MODE_ALL, mRssiFilter, null);
+    }
+
+    private void restartRangingWithDelay(int milliseconds) {
+        mBeaconManager.stopRanging();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.clearItems();
+                mBeaconManager.startRanging(mScanningConfigs);
+                invalidateOptionsMenu();
+            }
+        }, milliseconds);
     }
 
     @Override
     public void onBeaconDiscoverd(Beacon beacon) {
-        mAdapter.addOrIncreaseAdvertisementCount(beacon);
+        boolean isGoingToAdd = false;
+        if (!mIdFilter.isEmpty()) {
+            if (beacon.getId().toLowerCase().contains(mIdFilter.toLowerCase())) {
+                isGoingToAdd = true;
+            } else if (beacon.getAddress().toLowerCase().contains(mIdFilter.toLowerCase())) {
+                isGoingToAdd = true;
+            } else if (beacon.getAddress().toLowerCase().replaceAll(":", "").contains(mIdFilter.toLowerCase())) {
+                isGoingToAdd = true;
+            }
+        } else {
+            isGoingToAdd = true;
+        }
+
+        if (isGoingToAdd) {
+            mAdapter.addOrIncreaseAdvertisementCount(beacon);
+        }
     }
 
     @Override
