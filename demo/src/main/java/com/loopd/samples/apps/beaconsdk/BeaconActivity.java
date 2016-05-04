@@ -14,7 +14,10 @@ import com.loopd.sdk.beacon.BeaconManager;
 import com.loopd.sdk.beacon.listener.ConnectListener;
 import com.loopd.sdk.beacon.model.Beacon;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 
 public class BeaconActivity extends AppCompatActivity implements ConnectListener {
 
@@ -28,6 +31,7 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     private TextView mStatusTextView;
     private TextView mBeaconIdTextView;
     private TextView mBeaconAddressTextView;
+    private TextView mLogView;
     private Button mWriteCommandButton;
 
     public static Intent getCallingIntent(Context context, Beacon beacon) {
@@ -42,19 +46,22 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     @Override
     public void onBeaconConnected() {
         Log.d(TAG, "onBeaconConnected");
+        printLog("beacon connected");
         mStatusTextView.setText(R.string.wait_for_service);
     }
 
     @Override
     public void onBeaconDisconnected() {
         Log.d(TAG, "onBeaconDisconnected");
+        printLog("beacon disconnected");
         mStatusTextView.setText(R.string.disconnected);
-        mWriteCommandButton.setVisibility(View.GONE);
+        mWriteCommandButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onDataServiceAvailable(BluetoothGattCharacteristic characteristic) {
-        Log.d(TAG, "onDataServiceAvailable: " + characteristic);
+        Log.d(TAG, "onDataServiceAvailable: UUID = " + characteristic);
+        printLog("dataServiceAvailable: UUID = " + characteristic.getUuid());
         mLoopdCharacteristic = characteristic;
         mStatusTextView.setText(R.string.connected);
         mWriteCommandButton.setVisibility(View.VISIBLE);
@@ -63,8 +70,13 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     @Override
     public void onDataReceived(byte[] data) {
         Log.d(TAG, "onDataReceived: " + byteArrayToHex(data));
+        printLog("data received: " + byteArrayToHex(data));
         if (Arrays.equals(data, new byte[]{0x00})) {
+            printLog("test succeeded");
             mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_CHANGE_STATE_IN_EVENT);
+            printLog("write command 0xd5");
+        } else {
+            printLog("test failed");
         }
     }
 
@@ -78,7 +90,8 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
 
     @Override
     public void onConnectTimout() {
-        Log.d(TAG, "onConnectTimout");
+        Log.d(TAG, "onConnectTimeout");
+        printLog("connecting timeout");
         mStatusTextView.setText(R.string.disconnected);
     }
 
@@ -101,6 +114,7 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
         mStatusTextView = (TextView) findViewById(R.id.status);
         mBeaconIdTextView = (TextView) findViewById(R.id.beacon_id);
         mBeaconAddressTextView = (TextView) findViewById(R.id.beacon_address);
+        mLogView = (TextView) findViewById(R.id.log_view);
         mWriteCommandButton = (Button) findViewById(R.id.write_command_btn);
 
         mBeaconIdTextView.setText(mBeacon.getId());
@@ -114,6 +128,8 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     }
 
     private void sendBadgeTestingCommand() {
+        printLog("start test");
+        printLog("write command 0x40");
         mBeaconManager.writeCommand(mLoopdCharacteristic, new byte[]{0x40});
     }
 
@@ -121,8 +137,9 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     protected void onResume() {
         super.onResume();
         mStatusTextView.setText(R.string.connecting);
-        mWriteCommandButton.setVisibility(View.GONE);
+        mWriteCommandButton.setVisibility(View.INVISIBLE);
         mBeaconManager.connect(mBeacon, BeaconActivity.this);
+        printLog("start connecting");
     }
 
     @Override
@@ -135,5 +152,11 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     protected void onDestroy() {
         super.onDestroy();
         mBeaconManager.release();
+    }
+
+    private void printLog(String logStr) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd hh:mm:ss.sss", Locale.getDefault());
+        String time = dateFormat.format(new Date());
+        mLogView.setText(time + " : " + logStr + "\n" + mLogView.getText());
     }
 }

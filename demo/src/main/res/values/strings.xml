@@ -8,6 +8,7 @@
     <string name="disconnected">Disconnected</string>
     <string name="connected">Connected</string>
     <string name="write_command">Write command</string>
+    <string name="write_test_command">Write Test command</string>
     <string name="rssi_filter">RSSI: %s</string>
     <string name="none">NONE</string>
     <string-array name="command_array">
