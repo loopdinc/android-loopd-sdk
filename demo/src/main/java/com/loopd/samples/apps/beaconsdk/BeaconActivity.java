@@ -19,6 +19,7 @@ import com.loopd.sdk.beacon.listener.ConnectListener;
 import com.loopd.sdk.beacon.model.Beacon;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 public class BeaconActivity extends AppCompatActivity implements ConnectListener {
 
@@ -66,7 +67,13 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
 
     @Override
     public void onDataReceived(byte[] data) {
-        Log.d(TAG, "onDataReceived: " + data.toString());
+        String dataString = null;
+        try {
+            dataString = new String(data, "UTF8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "onDataReceived: " + Arrays.toString(data) + " encoded: " + dataString);
     }
 
     @Override
@@ -120,72 +127,24 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     public void onCommandDialogItemSelected(int position) {
         switch (position) {
             case 0:
-                // Change State
-                showChangeStateDialog();
-                break;
-            case 1:
                 // Switch off Both Leds
                 mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_OFF_BOTH_LEDS);
                 break;
-            case 2:
-                // Switch on Red Led
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_ON_RED_LED);
-                break;
-            case 3:
-                // Switch on Yellow Led
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_ON_YELLOW_LED);
-                break;
-            case 4:
+            case 1:
                 // Switch on Both Leds
                 mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_TURN_ON_BOTH_LEDS);
                 break;
-            case 5:
-                // Change Advertisement Power
-                showModifyTransmissionPowerDialog();
-                break;
-            case 6:
+            case 2:
                 // Disconnect Connection
                 mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_FORCE_DISCONNECT);
                 break;
-            case 7:
-                // Get Mac Address
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_GET_MAC_ADDRESS);
-                break;
-            case 8:
-                // Get the amount of free space
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_GET_AMOUNT_OF_FREE_SPACE);
-                break;
-            case 9:
-                // Get Device ID
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_GET_DEVICE_ID);
-                break;
-            case 10:
-                // iBeacon Advertisement
-                showWriteCommandWithParameterDialog(BeaconManager.COMMAND_IBEACON_ADVERTISEMENT);
-                break;
-            case 11:
-                // Eddystone Advertisement
-                showWriteCommandWithParameterDialog(BeaconManager.COMMAND_EDDYSTONE_ADVERTISEMENT);
-                break;
-            case 12:
-                // Advertise Eddystone and iBeacon
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_ADVERTISE_EDDYSTONE_AND_IBEACON);
-                break;
-            case 13:
+            case 3:
                 // Change Advertisement Frequency
                 showModifyAdvertisementFrequencyDialog();
                 break;
-            case 14:
-                // Soft Reset the device
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_SOFT_RESET);
-                break;
-            case 15:
-                // Erase Storage Data
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_ERASE_STORAGE_DATA);
-                break;
-            case 16:
-                // Get Firmware Version
-                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_GET_FIRMWARE_VERSION);
+            case 4:
+                // Disconnect Connection
+                mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_READ_DATA);
                 break;
         }
     }
@@ -215,125 +174,6 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
                                 break;
                         }
                         mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_CHANGE_ADVERTISEMENT_FREQUENCY, param);
-                    }
-                })
-                .show();
-    }
-
-    private void showModifyTransmissionPowerDialog() {
-        new AlertDialog.Builder(this)
-                .setItems(getResources().getStringArray(R.array.transmission_power_options), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        byte[] param = null;
-                        switch (which) {
-                            case 0:
-                                // -8dBM
-                                param = new byte[]{0x00, 0x08};
-                                break;
-                            case 1:
-                                // -4dBM
-                                param = new byte[]{0x00, 0x04};
-                                break;
-                            case 2:
-                                // +4dBM
-                                param = new byte[]{(byte) 0xFF, 0x04};
-                                break;
-                            case 3:
-                                // +8dBM
-                                param = new byte[]{(byte) 0xFF, 0x08};
-                                break;
-                        }
-                        mBeaconManager.writeCommand(mLoopdCharacteristic, BeaconManager.COMMAND_CHANGE_TRANSMISSION_POWER, param);
-                    }
-                })
-                .show();
-    }
-
-    private void showWriteCommandWithParameterDialog(final byte[] command) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        final EditText edittext= new EditText(this);
-        alert.setTitle("Write Parameter");
-        alert.setView(edittext);
-        alert.setPositiveButton("Write", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String inputString = edittext.getText().toString();
-
-                byte[] bytes = null;
-                try {
-                    bytes = hexStringToByteArray(inputString);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (bytes != null) {
-                    mBeaconManager.writeCommand(mLoopdCharacteristic, command, bytes);
-                } else {
-                    Toast.makeText(BeaconActivity.this, "cannot parse command string", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            private byte[] hexStringToByteArray(String s) throws Exception {
-                int len = s.length();
-                byte[] data = new byte[len / 2];
-                for (int i = 0; i < len; i += 2) {
-                    data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                            + Character.digit(s.charAt(i + 1), 16));
-                }
-                return data;
-            }
-        });
-        alert.show();
-    }
-
-    private void showChangeStateDialog() {
-        new AlertDialog.Builder(this)
-                .setItems(getResources().getStringArray(R.array.change_state_options), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        byte[] command = null;
-                        switch (which) {
-                            case 0:
-                                // inactive state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_INACTIVE;
-                                break;
-                            case 1:
-                                // in test state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_IN_TEST;
-                                break;
-                            case 2:
-                                // unregistered state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_UNREGISTERED;
-                                break;
-                            case 3:
-                                // registered state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_REGISTERED;
-                                break;
-                            case 4:
-                                // in event state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_IN_EVENT;
-                                break;
-                            case 5:
-                                // contact exchange state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_CONTACT_EXCHANGE;
-                                break;
-                            case 6:
-                                // away from event state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_AWAY_FROM_EVENT;
-                                break;
-                            case 7:
-                                // return state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_RETURN;
-                                break;
-                            case 8:
-                                // shipping state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_SHIPPING;
-                                break;
-                            case 9:
-                                // sys failure state
-                                command = BeaconManager.COMMAND_CHANGE_STATE_SYS_FAILURE;
-                                break;
-                        }
-                        mBeaconManager.writeCommand(mLoopdCharacteristic, command);
                     }
                 })
                 .show();
