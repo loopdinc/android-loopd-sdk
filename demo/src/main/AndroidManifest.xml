@@ -25,6 +25,8 @@
         </activity>
         <activity android:name=".BeaconActivity" android:parentActivityName=".MainActivity">
         </activity>
+        <activity android:name=".ContactExchangeActivity" android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>
