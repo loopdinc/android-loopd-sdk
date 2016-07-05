@@ -46,7 +46,7 @@ You need to release instance after use. For example in onDestroy method
 mBeaconManager.release();
 ```
 
-### Ranging
+#### Ranging
 ```java
 mBeaconManager.startRanging(ScanningConfigs);
 ```
@@ -58,7 +58,7 @@ You can instantiate ScanningConfigs with parameters: mode, rssi, beaconId
 new ScanningConfigs(ScanningConfigs.SCAN_MODE_ALL, null, null);
 ```
 
-### Connect
+#### Connect
 ```java
 mBeaconManager.connect(Beacon, ConnectListener);
 ```
@@ -66,11 +66,39 @@ mBeaconManager.connect(Beacon, ConnectListener);
 mBeaconManager.disconnect();
 ```
 
-### Write command
+#### Write command
 ```java
 // you can replace second parameter to other commands
 mBeaconManager.writeCommand(BluetoothGattCharacteristic, BeaconManager.COMMAND_TURN_ON_BOTH_LEDS);
 ```
+
+### ContactExchangeManager
+`ContactExchangeManager` is a basic manager helping developers to listen contact exchange data from Loopd Beacons. Also provide ability to detect beacons in different condition.
+```java
+mContactExchangeManager = new ContactExchangeManager(getApplicationContext());
+```
+You need to release instance after use. For example in onDestroy method
+```java
+mContactExchangeManager.release();
+```
+
+#### Listen Contact Exchange data
+```java
+mContactExchangeManager.startListenContactExchange(ScanningConfigs, ContactExchangeListener);
+```
+```java
+mContactExchangeManager.stopListenContactExchange();
+```
+
+#### Detect Beacon
+```java
+mContactExchangeManager.setDetectingListener(DetectingListener);
+mContactExchangeManager.startDetecting(ScanningConfigs);
+```
+```java
+mContactExchangeManager.stopDetecting();
+```
+
 
 ## Commands
 |name| command | action  |
