@@ -20,14 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"/>
 
-        <TextView
-            android:id="@+id/state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/beacon_id"
-            android:layout_toStartOf="@id/rssi"
-            android:layout_marginStart="4dp"/>
-
     </RelativeLayout>
 
     <RelativeLayout
