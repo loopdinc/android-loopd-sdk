@@ -4,8 +4,9 @@
 The Loopd Beacon SDK provides apis to interact with the Loopd Beacons from Android/iOS devices, and includes ranging, connecting, and writing and reading data between Loopd Beacons.
 
 ## Installation
-1. Create `libs` directory inside your project and copy there [aar](https://storage.googleapis.com/android-beacon-sdk/loopd-beacon-1.0.1.aar) file
-2. Add to build.gradle:
+1. [Download SDK file](https://storage.googleapis.com/android-beacon-sdk/loopd-beacon-1.0.4.aar)
+2. Create `libs` directory inside your project and copy there aar file
+3. Add to build.gradle:
 
 ```groovy
 repositories {
