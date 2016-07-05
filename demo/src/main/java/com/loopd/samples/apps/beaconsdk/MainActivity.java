@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.loopd.sdk.beacon.BeaconManager;
@@ -47,6 +48,22 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
         }
         mBeaconManager.setRangingListener(this);
         mScanningConfigs = new ScanningConfigs(ScanningConfigs.SCAN_MODE_ALL, null, null);
+
+        initContactExchangeButton();
+    }
+
+    private void initContactExchangeButton() {
+        findViewById(R.id.contact_exchange_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToContactExchangeDemoPage();
+            }
+        });
+    }
+
+    private void navigateToContactExchangeDemoPage() {
+        Intent intent = new Intent(MainActivity.this, ContactExchangeActivity.class);
+        startActivity(intent);
     }
 
     @Override

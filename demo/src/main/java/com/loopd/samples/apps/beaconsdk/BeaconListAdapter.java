@@ -32,7 +32,6 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
     public void onBindViewHolder(final BeaconListAdapter.ViewItemHolder itemHolder, int position) {
         BeaconListItem beaconListItem = mItems.get(position);
         itemHolder.setBeaconId(beaconListItem.getBeacon().getId());
-        itemHolder.setState(beaconListItem.getBeacon().getState());
         itemHolder.setBeaconAddress(beaconListItem.getBeacon().getAddress());
         itemHolder.setRssi(beaconListItem.getBeacon().getRssi());
         itemHolder.setAdvertisementCount(beaconListItem.getAdvertisementCount());
@@ -82,7 +81,6 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
 
     public static class ViewItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mBeaconIdTextView;
-        private TextView mStateTextView;
         private TextView mBeaconAddressTextView;
         private TextView mRssiTextView;
         private TextView mAdvertisementCountTextView;
@@ -95,7 +93,6 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
             itemView.setOnClickListener(this);
 
             mBeaconIdTextView = (TextView) itemView.findViewById(R.id.beacon_id);
-            mStateTextView = (TextView) itemView.findViewById(R.id.state);
             mBeaconAddressTextView = (TextView) itemView.findViewById(R.id.beacon_address);
             mRssiTextView = (TextView) itemView.findViewById(R.id.rssi);
             mAdvertisementCountTextView = (TextView) itemView.findViewById(R.id.advertisement_count);
@@ -120,43 +117,6 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Vi
 
         public void setAdvertisementCount(int count) {
             mAdvertisementCountTextView.setText("count: " + count);
-        }
-
-        public void setState(int state) {
-            String stateString = "NONE";
-            switch (state) {
-                case Beacon.STATE_INACTIVE:
-                    stateString = "STATE_INACTIVE";
-                    break;
-                case Beacon.STATE_IN_TEST:
-                    stateString = "STATE_IN_TEST";
-                    break;
-                case Beacon.STATE_UNREGISTERED:
-                    stateString = "STATE_UNREGISTERED";
-                    break;
-                case Beacon.STATE_REGISTERED:
-                    stateString = "STATE_REGISTERED";
-                    break;
-                case Beacon.STATE_IN_EVENT:
-                    stateString = "STATE_IN_EVENT";
-                    break;
-                case Beacon.STATE_CONTACT_EXCHANGE:
-                    stateString = "STATE_CONTACT_EXCHANGE";
-                    break;
-                case Beacon.STATE_AWAY_FROM_EVENT:
-                    stateString = "STATE_AWAY_FROM_EVENT";
-                    break;
-                case Beacon.STATE_RETURN:
-                    stateString = "STATE_RETURN";
-                    break;
-                case Beacon.STATE_SHIPPING:
-                    stateString = "STATE_SHIPPING";
-                    break;
-                case Beacon.STATE_SYS_FAILURE:
-                    stateString = "STATE_SYS_FAILURE";
-                    break;
-            }
-            mStateTextView.setText(String.format("(%s)", stateString).toLowerCase());
         }
     }
 

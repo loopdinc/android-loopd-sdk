@@ -74,6 +74,7 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
             e.printStackTrace();
         }
         Log.d(TAG, "onDataReceived: " + Arrays.toString(data) + " encoded: " + dataString);
+        Toast.makeText(getApplicationContext(), "onDataReceived: " + Arrays.toString(data) + " encoded: " + dataString, Toast.LENGTH_SHORT).show();
     }
 
     @Override
