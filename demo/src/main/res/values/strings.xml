@@ -9,6 +9,7 @@
     <string name="connected">Connected</string>
     <string name="write_command">Write command</string>
     <string name="contact_exchange">Contact Exchange</string>
+    <string name="contact_exchange_page_title">Contact Exchange</string>
     <string-array name="command_array">
         <item>Switch off Both Leds</item>
         <item>Switch on Both Leds</item>
