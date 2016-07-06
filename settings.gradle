@@ -1,1 +1,1 @@
-include ':demo', ':sdk'
+include ':demo', ':loopd-beacon-sdk'
