@@ -1,0 +1,53 @@
+apply plugin: 'com.android.library'
+
+ext {
+    bintrayRepo = PROJ_REPO
+    bintrayName = PROJ_NAME
+
+    publishedGroupId = PROJ_GROUP
+    libraryName = PROJ_NAME
+    artifact = PROJ_ARTIFACTID
+
+    libraryDescription = PROJ_DESCRIPTION
+
+    siteUrl = PROJ_WEBSITEURL
+    gitUrl = PROJ_VCSURL
+
+    libraryVersion = PROJ_VERSION
+
+    developerId = DEVELOPER_ID
+    developerName = DEVELOPER_NAME
+    developerEmail = DEVELOPER_EMAIL
+
+    licenseName = LICENSE_NAME
+    licenseUrl = LICENSE_URL
+    allLicenses = ALL_LICENSES
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0.4"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:support-annotations:23.1.1'
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
