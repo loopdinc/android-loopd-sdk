@@ -92,6 +92,7 @@ mContactExchangeManager.stopListenContactExchange();
 ```
 
 #### Detect Beacon
+Detect the first beacon which fits given condition
 ```java
 mContactExchangeManager.setDetectingListener(DetectingListener);
 mContactExchangeManager.startDetecting(ScanningConfigs);
