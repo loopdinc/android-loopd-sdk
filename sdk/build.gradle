@@ -1,15 +1,14 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
-        applicationId "com.loopd.samples.apps.beaconsdk"
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.4"
     }
     buildTypes {
         release {
@@ -20,9 +19,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile project(':sdk')
+    compile 'com.android.support:support-annotations:23.1.1'
 }
+
+apply from: 'https://raw.githubusercontent.com/venshine/gradle-bintray-upload/master/bintray.gradle'
