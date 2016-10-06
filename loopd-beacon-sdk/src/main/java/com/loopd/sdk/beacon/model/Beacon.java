@@ -45,7 +45,7 @@ public class Beacon implements Parcelable {
     private String mAddress;
     private int mRssi;
     private boolean mWithData;
-    private int mState;
+//    private int mState;
     private int mBatteryInfo;
     private String mFirmwareVersion;
 
@@ -58,8 +58,8 @@ public class Beacon implements Parcelable {
         byte manufactureId1 = scanRecord[28];
         byte manufactureId2 = scanRecord[29];
         byte manufactureId3 = scanRecord[30];
-        mWithData = (manufactureId1 & 0xff) == 0x02 && (manufactureId2 & 0xff) == 0x01 && (manufactureId3 & 0xff) == 0x06;
-        mState = (scanRecord[30] & 0xf0) >>> 4;
+        mWithData = (manufactureId1 & 0xff) == 0x02 && (manufactureId2 & 0xff) == 0xFF && (manufactureId3 & 0xff) == 0x01;
+//        mState = (scanRecord[30] & 0xf0) >>> 4;
         mBatteryInfo = scanRecord[30] & 0x07;
         if ((scanRecord[32] & 0xff) == DATA_TYPE_SERVICE_DATA) {
             mFirmwareVersion = (scanRecord[33] & 0xff) + "." + (scanRecord[34] & 0xff);
@@ -104,13 +104,13 @@ public class Beacon implements Parcelable {
         return mWithData;
     }
 
-    public int getState() {
-        return mState;
-    }
-
-    public void setState(@State int state) {
-        mState = state;
-    }
+//    public int getState() {
+//        return mState;
+//    }
+//
+//    public void setState(@State int state) {
+//        mState = state;
+//    }
 
     public int getBatteryInfo() {
         return mBatteryInfo;
@@ -139,7 +139,7 @@ public class Beacon implements Parcelable {
         dest.writeString(this.mAddress);
         dest.writeInt(this.mRssi);
         dest.writeByte(mWithData ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.mState);
+//        dest.writeInt(this.mState);
         dest.writeInt(this.mBatteryInfo);
         dest.writeString(this.mFirmwareVersion);
     }
@@ -149,7 +149,7 @@ public class Beacon implements Parcelable {
         this.mAddress = in.readString();
         this.mRssi = in.readInt();
         this.mWithData = in.readByte() != 0;
-        this.mState = in.readInt();
+//        this.mState = in.readInt();
         this.mBatteryInfo = in.readInt();
         this.mFirmwareVersion = in.readString();
     }
