@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.ScanRecord;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -96,9 +95,9 @@ public class BeaconManager implements BluetoothVerifier, BeaconScanner, BeaconCo
         @Override
         public void run() {
             if (!mIsBeaconConnected) {
-                Log.i(TAG, "onConnectTimout");
+                Log.i(TAG, "onConnectTimeout");
                 if (mConnectListener != null) {
-                    mConnectListener.onConnectTimout();
+                    mConnectListener.onConnectTimeout();
                 }
             }
         }
@@ -227,7 +226,7 @@ public class BeaconManager implements BluetoothVerifier, BeaconScanner, BeaconCo
                                     new Handler(mAppContext.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            mRangingListener.onBeaconDiscoverd(beacon);
+                                            mRangingListener.onBeaconDiscovered(beacon);
                                         }
                                     });
                                 }

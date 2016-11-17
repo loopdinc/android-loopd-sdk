@@ -4,5 +4,5 @@ import com.loopd.sdk.beacon.model.Beacon;
 
 public interface RangingListener {
 
-    void onBeaconDiscoverd(Beacon beacon);
+    void onBeaconDiscovered(Beacon beacon);
 }
