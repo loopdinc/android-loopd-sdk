@@ -77,8 +77,8 @@ public class BeaconActivity extends AppCompatActivity implements ConnectListener
     }
 
     @Override
-    public void onConnectTimout() {
-        Log.d(TAG, "onConnectTimout");
+    public void onConnectTimeout() {
+        Log.d(TAG, "onConnectTimeout");
         mStatusTextView.setText(R.string.disconnected);
     }
 

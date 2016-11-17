@@ -12,5 +12,5 @@ public interface ConnectListener {
 
     void onDataReceived(byte[] data);
 
-    void onConnectTimout();
+    void onConnectTimeout();
 }

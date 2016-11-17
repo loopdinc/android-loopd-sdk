@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements RangingListener, 
     }
 
     @Override
-    public void onBeaconDiscoverd(Beacon beacon) {
+    public void onBeaconDiscovered(Beacon beacon) {
         mAdapter.addOrIncreaseAdvertisementCount(beacon);
     }
 

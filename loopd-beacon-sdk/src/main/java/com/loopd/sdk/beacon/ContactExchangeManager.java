@@ -60,7 +60,7 @@ public class ContactExchangeManager implements BluetoothVerifier, BeaconDetector
         }
         mMonitorBeaconManager.setRangingListener(new RangingListener() {
             @Override
-            public void onBeaconDiscoverd(final Beacon beacon) {
+            public void onBeaconDiscovered(final Beacon beacon) {
                 if (configs.getBeaconId() == null || configs.getBeaconId().equals(beacon.getId())) {
                     if (mMonitorBeaconManager.isRanging()) {
                         mMonitorBeaconManager.stopRanging();
@@ -121,8 +121,8 @@ public class ContactExchangeManager implements BluetoothVerifier, BeaconDetector
                         }
 
                         @Override
-                        public void onConnectTimout() {
-                            Log.i(TAG, "onConnectTimout");
+                        public void onConnectTimeout() {
+                            Log.i(TAG, "onConnectTimeout");
                             collectDataAndBackToDetecting();
                         }
 
@@ -166,7 +166,7 @@ public class ContactExchangeManager implements BluetoothVerifier, BeaconDetector
         }
         mDetectingBeaconManager.setRangingListener(new RangingListener() {
             @Override
-            public void onBeaconDiscoverd(final Beacon beacon) {
+            public void onBeaconDiscovered(final Beacon beacon) {
                 mDetectingBeaconManager.stopRanging();
                 if (mDetectListener != null) {
                     mDetectListener.onBeaconDetected(beacon);
