@@ -1,5 +1,6 @@
 package com.loopd.sdk.beacon.ota;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -100,33 +101,33 @@ public class OtaUpgrader {
         public void onFinish(int status);
     }
 
-    public OtaUpgrader(Context context, String deviceAddress, File file, Callback callback) {
-        mContext = context;
+    public OtaUpgrader(Context context) {
+        if (context instanceof Activity) {
+            mContext = context;
+        } else {
+            throw(new RuntimeException("context has too be an Activity"));
+        }
+    }
+
+    public void setListener(Callback callback) {
+        mCallback = callback;
+    }
+
+    public void start(String deviceAddress, File file) {
         mDeviceAddress = deviceAddress;
         mFile = file;
-        mCallback = callback;
+        mPatchFileResId = 0;
+        start();
     }
 
-    public OtaUpgrader(Context context, String deviceAddress, int patchFileResId, Callback callback) {
-        mContext = context;
+    public void start(String deviceAddress, int patchFileResId) {
         mDeviceAddress = deviceAddress;
+        mFile = null;
         mPatchFileResId = patchFileResId;
-        mCallback = callback;
+        start();
     }
 
-    public void setDeviceAddress(String deviceAddress) {
-    	mDeviceAddress = deviceAddress;
-    }
-
-    public void setPatchFileResId(int patchFileResId) {
-        mPatchFileResId = patchFileResId;
-    }
-
-    public void setCallback(Callback callback) {
-        mCallback = callback;
-    }
-
-    public void start() {
+    private void start() {
         if (DEBUG) {
             Log.d(TAG, "start()");
         }
@@ -134,7 +135,7 @@ public class OtaUpgrader {
         if (mStateMachine == null) {
             HandlerThread handlerThread = new HandlerThread(TAG);
             handlerThread.start();
-            
+
             Looper looper = handlerThread.getLooper();
             mStateMachine = new StateMachine(looper);
             mStateMachine.start();
@@ -151,19 +152,19 @@ public class OtaUpgrader {
         }
     }
 
-    public int getPatchSize() {
-        if (mPatchFileResId == 0) {
-            return  Integer.parseInt(String.valueOf(mFile.length()));
-        } else {
-            InputStream ins = mContext.getResources().openRawResource(mPatchFileResId);
-            int sizeOfInputStram = 0; // Get the size of the stream
-            try {
-                sizeOfInputStram = ins.available();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return sizeOfInputStram;
+    public int getPatchSize(int fileResId) {
+        InputStream ins = mContext.getResources().openRawResource(fileResId);
+        int sizeOfInputStram = 0; // Get the size of the stream
+        try {
+            sizeOfInputStram = ins.available();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return sizeOfInputStram;
+    }
+
+    public int getPatchSize(File file) {
+        return  Integer.parseInt(String.valueOf(file.length()));
     }
 
     private int connect() {
@@ -437,13 +438,18 @@ public class OtaUpgrader {
         }
 
         if (mCallback != null) {
-            int precent = (mOffset * 100) / mPatchSize;
+            final int precent = (mOffset * 100) / mPatchSize;
 
-            mCallback.onProgress(mOffset, precent);
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mCallback.onProgress(mOffset, precent);
+                }
+            });
         }
     }
 
-    private void handleFinish(int status) {
+    private void handleFinish(final int status) {
         if (DEBUG) {
             Log.d(TAG, "handleFinish(), status = " + status);
         }
@@ -451,7 +457,12 @@ public class OtaUpgrader {
         disconnect();
 
         if (mCallback != null) {
-            mCallback.onFinish(status);
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mCallback.onFinish(status);
+                }
+            });
         }
 
         mStateMachine = null;
@@ -680,7 +691,11 @@ public class OtaUpgrader {
             public void enter() {
                 super.enter();
 
-                mPatchSize = getPatchSize();
+                if (mPatchFileResId == 0) {
+                    mPatchSize = getPatchSize(mFile);
+                } else {
+                    mPatchSize =  getPatchSize(mPatchFileResId);
+                }
                 int status = sendCommand(COMMAND_PREPARE_DOWNLOAD, (short)mPatchSize);
 
                 if (status != STATUS_OK) {

@@ -292,7 +292,9 @@ public class BeaconManager implements BluetoothVerifier, BeaconScanner, BeaconCo
         Log.i(TAG, "stopRanging");
         mIsRanging = false;
         mBleRescanTimer.cancel();
-        getBluetoothAdapterSafely().stopLeScan(mLeScanCallback);
+        if (hasBluetooth()) {
+            getBluetoothAdapterSafely().stopLeScan(mLeScanCallback);
+        }
     }
 
     @Override
