@@ -151,7 +151,9 @@ public class ContactExchangeManager implements BluetoothVerifier, BeaconDetector
 
     @Override
     public void stopListenContactExchange() {
-        mMonitorBeaconManager.stopRanging();
+        if (mMonitorBeaconManager.hasBluetooth()) {
+            mMonitorBeaconManager.stopRanging();
+        }
     }
 
     @Override
@@ -178,7 +180,9 @@ public class ContactExchangeManager implements BluetoothVerifier, BeaconDetector
 
     @Override
     public void stopDetecting() {
-        mDetectingBeaconManager.stopRanging();
+        if (mDetectingBeaconManager.hasBluetooth()) {
+            mDetectingBeaconManager.stopRanging();
+        }
     }
 
     @Override
