@@ -156,7 +156,7 @@ public class BeaconManager implements BluetoothVerifier, BeaconScanner, BeaconCo
 
     @Override
     public boolean isBluetoothEnabled() {
-        return mBluetoothAdapter != null ? mBluetoothAdapter.isEnabled() : false;
+        return mBluetoothAdapter != null && mBluetoothAdapter.isEnabled();
     }
 
     @Override
