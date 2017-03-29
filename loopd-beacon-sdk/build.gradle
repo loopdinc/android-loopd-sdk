@@ -26,13 +26,13 @@ ext {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0.7" // also need to update in gradle.properties
+        versionName "1.0.8" // also need to update in gradle.properties
     }
     buildTypes {
         release {
@@ -45,7 +45,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-annotations:25.0.1'
+    compile 'com.android.support:support-annotations:25.2.0'
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
