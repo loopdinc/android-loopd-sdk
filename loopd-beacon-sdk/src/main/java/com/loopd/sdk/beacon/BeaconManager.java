@@ -220,7 +220,7 @@ public class BeaconManager implements BluetoothVerifier, BeaconScanner, BeaconCo
                                 }
                                 return;
                             }
-                            if (mRangingListener != null && checkUUID(scanRecord)) {
+                            if (mRangingListener != null && checkUUID(scanRecord) && checkRssi(rssi)) {
                                 final Beacon beacon = new Beacon(device, rssi, scanRecord);
                                 if (checkMatchScanningConfigs(beacon)) {
                                     new Handler(mAppContext.getMainLooper()).post(new Runnable() {
@@ -285,6 +285,10 @@ public class BeaconManager implements BluetoothVerifier, BeaconScanner, BeaconCo
                         && (scanRecord[18] & 0xff) == 0x4B
                         && (scanRecord[19] & 0xff) == 0x69
                         && (scanRecord[20] & 0xff) == 0xFB);
+    }
+
+    private boolean checkRssi(int rssi) {
+        return rssi <= 0;
     }
 
     @Override
