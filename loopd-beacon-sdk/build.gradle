@@ -32,7 +32,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0.8" // also need to update in gradle.properties
+        versionName "1.0.9" // also need to update in gradle.properties
     }
     buildTypes {
         release {
